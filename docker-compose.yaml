@@ -11,12 +11,12 @@ services:
       - .:/app/
     port:
       - 3750:3750
-    depeds_on:
+    depends_on:
       - pgdb
 
   pgdb:
     image: postgres:14
-    enviroment:
+    environment:
       POSTGRES_DB: "pgdb"
       POSTGRES_USER: "developer"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
