@@ -9,7 +9,7 @@ services:
     command: python3 app.py
     volumes:
       - .:/app/
-    port:
+    ports:
       - 3750:3750
     depends_on:
       - pgdb
