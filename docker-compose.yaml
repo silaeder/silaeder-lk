@@ -35,3 +35,8 @@ services:
       - pgdb
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+
+
+volumes:
+  postgres_data:
+  pgadmin_data:
