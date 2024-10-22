@@ -1,4 +1,4 @@
-curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -d '{"real_name": "Силаедров Силаэдр Силаедорович"}'
+curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -d '{"real_name": "Силаедров Силаэдр Силаедорович", "user_type": "admin"}'
 
 curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss
 
@@ -8,8 +8,8 @@ curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silae
 
 curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -d '{
   "users": [
-    {"real_name": "Загипов Загип Загипович"},
-    {"real_name": "Пепезов Пепез Пепезович"},
-    {"real_name": "Тараканов Таракан Тараканович"}
+    {"real_name": "Загипов Загип Загипович", "user_type": "student"},
+    {"real_name": "Пепезов Пепез Пепезович", "user_type": "student"},
+    {"real_name": "Тараканов Таракан Тараканович", "user_type": "student"}
   ]
 }'

@@ -11,6 +11,7 @@ class User(db.Model):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(120), unique=True, nullable=False)
+    user_type = db.Column(db.String(100), nullable=False) #возможные значения: user, student, teacher, admin, root
     email = db.Column(db.String(120), unique=True)
     full_name = db.Column(db.String(200), nullable=False)
     birth_date = db.Column(db.Date)
@@ -18,14 +19,14 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     contacts = db.Column(db.String(100))
     interests = db.Column(db.String(100))
-    projects = db.relationship('Project', backref='user', lazy=True)
+    #projects = db.relationship('Project', backref='user', lazy=True)
 
     def __repr__(self):
         return f"<User {self.login}>"
 
 class UserManager:
     @staticmethod
-    def add_user(real_name):
+    def add_user(real_name, user_type):
         """Добавляет нового пользователя в базу данных."""
         full_name = re.sub(r'[^a-zA-Z ]', '', translit(real_name, language_code='ru', reversed=True).lower())
         base_username = full_name.split()[0] + "." + full_name.split()[1][0] + full_name.split()[2][0]
@@ -40,7 +41,7 @@ class UserManager:
         password = ''.join(random.choice(characters) for i in range(8))
         password_hash = hashlib.md5(password.encode()).hexdigest()
 
-        new_user = User(login=username, full_name=real_name, password=password_hash)
+        new_user = User(login=username, full_name=real_name, password=password_hash, user_type=user_type)
         db.session.add(new_user)
         db.session.commit()
         return new_user, password
