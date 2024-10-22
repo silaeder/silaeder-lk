@@ -1,15 +1,17 @@
-curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -d '{"real_name": "Силаедров Силаэдр Силаедорович", "user_type": "admin"}'
+curl http://localhost:3750/auth/login\?login\=adm.in\&password\=silaederzzzzzz123_galyasik -H "Content-Type: application/json"
 
-curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss
+curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -H "Authorization: " -d '{"real_name": "Силаедров Силаэдр Силаедорович", "user_type": "admin"}'
 
-curl -X POST http://localhost:3750/user/update_user -H "Content-Type: application/json" -d '{"email_or_login": "silaedrov.ss", "updates": {"email": "admin@silaeder.ru"}}'
+curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss -H "Authorization: "
 
-curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silaeder.ru
+curl -X POST http://localhost:3750/user/update_user -H "Content-Type: application/json" -d '{"email_or_login": "silaedrov.ss", "updates": {"email": "admin@silaeder.ru"}}' -H "Authorization: "
 
-curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -d '{
+curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silaeder.ru  -H "Authorization: "
+
+curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -H "Authorization: JWT" -d '{
   "users": [
-    {"real_name": "Загипов Загип Загипович", "user_type": "student"},
-    {"real_name": "Пепезов Пепез Пепезович", "user_type": "student"},
-    {"real_name": "Тараканов Таракан Тараканович", "user_type": "student"}
+    {"real_name": "Загипов Загип Загипович"},
+    {"real_name": "Пепезов Пепез Пепезович"},
+    {"real_name": "Тараканов Таракан Тараканович"}
   ]
 }'

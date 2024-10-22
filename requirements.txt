@@ -1,8 +1,14 @@
 Flask==3.0.3
 
 #БД
-Flask-SQLAlchemy==3.1.1
+flask_sqlalchemy==3.1.1
 psycopg2==2.9.10
 
 #Генерация логинов
 transliterate==1.10.2
+
+#JWT
+PyJWT
+
+#Загрузка переменных окружения
+python-dotenv
