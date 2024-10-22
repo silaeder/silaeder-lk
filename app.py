@@ -1,16 +1,25 @@
 from flask import Flask, Blueprint
-from database import init_db, db
+from flask_cors import CORS
+
 from routes.projects import projects_bp
 from routes.user import user_bp
 from routes.guild import guild_bp
 from routes.auth import auth_bp
+
+from database import init_db, db
 from database.user import UserManager
+
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app) 
+CORS(app, resources={r"/*": {"origins": [
+    "http://server.mrvasil.ru:*",
+    "https://server.mrvasil.ru:*"
+]}})
 
 init_db(app)
 

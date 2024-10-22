@@ -12,3 +12,6 @@ PyJWT
 
 #Загрузка переменных окружения
 python-dotenv
+
+#CORS
+flask-cors
