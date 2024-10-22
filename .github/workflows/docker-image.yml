@@ -12,6 +12,14 @@ jobs:
 
     runs-on: self-hosted
 
+    env:
+        ADMIN_PASSWORD: ${{ vars.ADMIN_PASSWORD }}
+        DB_NAME: ${{ vars.DB_NAME }}
+        DB_USER: ${{ vars.DB_USER }}
+        DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+        DB_PORT: ${{ vars.DB_PORT }}
+        JWT_SECRET: ${{ vars.JWT_SECRET }}
+    
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
