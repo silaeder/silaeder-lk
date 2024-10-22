@@ -27,7 +27,14 @@ class UserManager:
     def add_user(real_name):
         """Добавляет нового пользователя в базу данных."""
         full_name = re.sub(r'[^a-zA-Z ]', '', translit(real_name, language_code='ru', reversed=True).lower())
-        username = full_name.split()[0] + "." + full_name.split()[1][0] + full_name.split()[2][0]
+        base_username = full_name.split()[0] + "." + full_name.split()[1][0] + full_name.split()[2][0]
+        
+        # Проверяем, существует ли пользователь с таким логином
+        username = base_username
+        counter = 1
+        while User.query.filter_by(login=username).first():
+            username = f"{base_username}{counter}"
+            counter += 1
         
         characters = string.ascii_letters + string.digits
         password = ''.join(random.choice(characters) for i in range(8))
