@@ -2,9 +2,8 @@ from flask import Blueprint, request, render_template, redirect, url_for, jsonif
 import jwt
 import os
 import hashlib
-from database import user
+from database.user import UserManager
 from functools import wraps
-from database.user import User
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -14,7 +13,7 @@ def login():
         return jsonify({"error": "Login and password are required"}), 400
     login = request.args.get("login")
     password = hashlib.md5(request.args.get("password").encode()).hexdigest()
-    if user.User.check_credentials(login, password):
+    if UserManager.check_credentials(login, password):
         token = jwt.encode({"login": login}, os.getenv("JWT_SECRET"), algorithm="HS256")
         return jsonify({"success": True, "token": token})
     return jsonify({"success": False})
@@ -40,7 +39,7 @@ def is_admin(f):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-            user = User.get_user_by_login(data["login"])
+            user = UserManager.get_user_by_email(data["login"])
             if not user.is_admin:
                 return jsonify({'message': 'User is not admin!'}), 401
             else:
