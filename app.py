@@ -21,7 +21,8 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 
 with app.app_context():
     db.create_all()
-    UserManager.add_user("ADM I N", is_admin=True, password=os.getenv("ADMIN_PASSWORD"))
+    user = UserManager.add_user("ADM I N", is_admin=True, password=os.getenv("ADMIN_PASSWORD"))
+    print("Admin: ", user)
 
 if __name__ == "__main__":
     app.run("0.0.0.0", 3750)

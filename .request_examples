@@ -1,15 +1,32 @@
-curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -d '{"real_name": "Силаедров Силаэдр Силаедорович", "user_type": "admin"}'
+#Получение токена (логин и пароль выводятся при запуске) 
+curl http://localhost:3750/auth/login\?login\=adm.in\&password\=silaederzzzzzz123_galyasik -H "Content-Type: application/json"
+#{"success":true,"token":"asd"}
 
-curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss
+#Добавление пользователя
+curl -X POST http://localhost:3750/user/add_user -H "Content-Type: application/json" -H "Authorization: " -d '{"real_name": "Силаедров Силаэдр Силаедорович", "user_type": "admin"}'
+#{{"password":"ZhqeBTh5","success":true,"username":"silaedrov.ss1"}
 
-curl -X POST http://localhost:3750/user/update_user -H "Content-Type: application/json" -d '{"email_or_login": "silaedrov.ss", "updates": {"email": "admin@silaeder.ru"}}'
+#Получение пользователя (по логину или почте)
+curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss -H "Authorization: "
+#{"user":{"email":null,"full_name":"Ф И О","login":"silaedrov.ss1"}
 
-curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silaeder.ru
+#Обновление пользователя (в json можно передавать все поля, которые есть в БД)
+curl -X POST http://localhost:3750/user/update_user -H "Content-Type: application/json" -d '{"email_or_login": "silaedrov.ss", "updates": {"email": "admin@silaeder.ru"}}' -H "Authorization: "
+#{"success":true}
 
-curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -d '{
+#Удаление пользователя (по логину или почте)
+curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silaeder.ru  -H "Authorization: "
+#{"success":true}
+
+curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -H "Authorization: JWT" -d '{
   "users": [
-    {"real_name": "Загипов Загип Загипович", "user_type": "student"},
-    {"real_name": "Пепезов Пепез Пепезович", "user_type": "student"},
-    {"real_name": "Тараканов Таракан Тараканович", "user_type": "student"}
+    {"real_name": "Загипов Загип Загипович"},
+    {"real_name": "Пепезов Пепез Пепезович"},
+    {"real_name": "Тараканов Таракан Тараканович"}
   ]
 }'
+#{"added_users":
+#    [{"password":"7JieWD82","real_name":"Ф И О","username":"zagipov.zz"},
+#    {"password":"ASCJhh5h","real_name":"Ф И О","username":"pepezov.pp"},
+#    {"password":"q42Hm0q5","real_name":"Ф И О","username":"tarakanov.tt"}],
+#    "success":true}
