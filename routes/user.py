@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 from database.user import UserManager
 from routes.auth import auth_required
+from dotenv import load_dotenv
+
+load_dotenv()
 
 user_bp = Blueprint("user", __name__)
 

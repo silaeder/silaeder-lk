@@ -4,6 +4,9 @@ import os
 import hashlib
 from database.user import UserManager
 from functools import wraps
+from dotenv import load_dotenv
+
+load_dotenv()
 
 auth_bp = Blueprint("auth", __name__)
 
