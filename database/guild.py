@@ -27,3 +27,28 @@ class GuildManager:
         db.session.commit()
         return new_guild
     
+    @staticmethod
+    def delete_guild(guild_id):
+        guild = Guild.query.get(guild_id)
+        db.session.delete(guild)
+        db.session.commit()
+        return True
+
+    @staticmethod
+    def add_user_to_guild(guild_id, user_id):
+        new_guild_user = GuildUser(guild_id=guild_id, user_id=user_id)
+        db.session.add(new_guild_user)
+        db.session.commit()
+        return new_guild_user
+    
+    @staticmethod
+    def remove_user_from_guild(guild_id, user_id):
+        guild_user = GuildUser.query.filter_by(guild_id=guild_id, user_id=user_id).first()
+        db.session.delete(guild_user)
+        db.session.commit()
+        return True
+    
+    @staticmethod
+    def get_guild_users(guild_id):
+        return [gu.user_id for gu in GuildUser.query.filter_by(guild_id=guild_id).all()]
+    
