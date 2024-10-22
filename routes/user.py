@@ -15,10 +15,9 @@ def index():
 @auth_required
 def add_user():
     real_name = request.json.get('real_name')
-    user_type = request.json.get('user_type')
     if not real_name:
         return jsonify({"error": "Real name is required"}), 400
-    user, password = UserManager.add_user(real_name, user_type)
+    user, password = UserManager.add_user(real_name)
     return jsonify({"success": True, "username": str(user.login), "password": password}), 201
 
 @user_bp.route("/get_user", methods=["GET"])
