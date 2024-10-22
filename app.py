@@ -15,11 +15,19 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app) 
-CORS(app, resources={r"/*": {"origins": [
-    "http://server.mrvasil.ru:*",
-    "https://server.mrvasil.ru:*"
-]}})
+
+CORS(app, resources={r"/*": {
+    "origins": [
+        "http://server.mrvasil.ru:*",
+        "https://server.mrvasil.ru:*",
+        "http://server.mrvasil.ru",
+        "https://server.mrvasil.ru"
+    ],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"],
+    "expose_headers": ["Content-Type", "X-Total-Count"],
+    "supports_credentials": True
+}})
 
 init_db(app)
 
