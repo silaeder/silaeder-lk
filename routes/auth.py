@@ -10,7 +10,7 @@ load_dotenv()
 
 auth_bp = Blueprint("auth", __name__)
 
-@auth_bp.route("/login", methods=["GET"])
+@auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if not request.args.get("login") or not request.args.get("password"):
         return jsonify({"error": "Login and password are required"}), 400
