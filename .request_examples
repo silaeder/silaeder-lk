@@ -5,3 +5,11 @@ curl http://localhost:3750/user/get_user?email_or_login=silaedrov.ss
 curl -X POST http://localhost:3750/user/update_user -H "Content-Type: application/json" -d '{"email_or_login": "silaedrov.ss", "updates": {"email": "admin@silaeder.ru"}}'
 
 curl -X DELETE http://localhost:3750/user/delete_user?email_or_login=admin@silaeder.ru
+
+curl -X POST http://localhost:3750/user/add_class -H "Content-Type: application/json" -d '{
+  "users": [
+    {"real_name": "Загипов Загип Загипович"},
+    {"real_name": "Пепезов Пепез Пепезович"},
+    {"real_name": "Тараканов Таракан Тараканович"}
+  ]
+}'

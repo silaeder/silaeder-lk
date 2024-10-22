@@ -13,7 +13,7 @@ def add_user():
     if not real_name:
         return jsonify({"error": "Real name is required"}), 400
     user = UserManager.add_user(real_name)
-    return jsonify({"success": True, "username": str(user.login)}), 201
+    return jsonify({"success": True, "username": str(user.login), "password": user.password}), 201
 
 @user_bp.route("/get_user", methods=["GET"])
 def get_user():
@@ -36,7 +36,7 @@ def update_user():
     updates = request.json.get('updates', {})
     success = UserManager.update_user(email_or_login, **updates)
     if success:
-        return jsonify({"success": True, "message": "User updated successfully"}), 200
+        return jsonify({"success": True}), 200
     else:
         return jsonify({"error": "User not found or update failed"}), 404
 
@@ -45,6 +45,27 @@ def delete_user():
     email_or_login = request.args.get('email_or_login')
     success = UserManager.delete_user(email_or_login)
     if success:
-        return jsonify({"success": True, "message": "User deleted successfully"}), 200
+        return jsonify({"success": True}), 200
     else:
         return jsonify({"error": "User not found"}), 404
+
+
+@user_bp.route("/add_class", methods=["POST"])
+def add_users():
+    users_data = request.json.get('users')
+    if not users_data or not isinstance(users_data, list):
+        return jsonify({"error": "Invalid users data. Expected a list of user information."}), 400
+    
+    added_users = []
+    for user_info in users_data:
+        real_name = user_info.get('real_name')
+        if not real_name:
+            return jsonify({"error": f"Real name is required for all users. Missing for: {user_info}"}), 400
+        user = UserManager.add_user(real_name)
+        added_users.append({
+            "username": str(user.login),
+            "password": user.password,
+            "real_name": real_name
+        })
+    
+    return jsonify({"success": True, "added_users": added_users}), 201

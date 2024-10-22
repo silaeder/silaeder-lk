@@ -21,7 +21,6 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.login}>"
 
-#Набросок функций для бд
 class UserManager:
     @staticmethod
     def add_user(real_name):
@@ -29,7 +28,6 @@ class UserManager:
         full_name = re.sub(r'[^a-zA-Z ]', '', translit(real_name, language_code='ru', reversed=True).lower())
         base_username = full_name.split()[0] + "." + full_name.split()[1][0] + full_name.split()[2][0]
         
-        # Проверяем, существует ли пользователь с таким логином
         username = base_username
         counter = 1
         while User.query.filter_by(login=username).first():
