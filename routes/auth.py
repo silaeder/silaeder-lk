@@ -4,6 +4,7 @@ import os
 import hashlib
 from database import user
 from functools import wraps
+from database.user import User
 
 auth_bp = Blueprint("auth", __name__)
 

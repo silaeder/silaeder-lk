@@ -21,6 +21,8 @@ def add_user():
 @user_bp.route("/get_user", methods=["GET"])
 @auth_required
 def get_user():
+    if not request.args.get('email_or_login'):
+        return jsonify({"error": "Email or login is required"}), 400
     email_or_login = request.args.get('email_or_login')
     user = UserManager.get_user_by_email(email_or_login)
     if user:
@@ -37,6 +39,8 @@ def get_user():
 @user_bp.route("/update_user", methods=["POST"])
 @auth_required
 def update_user():
+    if not request.json.get('email_or_login') or not request.json.get('updates'):
+        return jsonify({"error": "Email or login and updates are required"}), 400
     email_or_login = request.json.get('email_or_login')
     updates = request.json.get('updates', {})
     success = UserManager.update_user(email_or_login, **updates)
@@ -48,6 +52,8 @@ def update_user():
 @user_bp.route("/delete_user", methods=["DELETE"])
 @auth_required
 def delete_user():
+    if not request.args.get('email_or_login'):
+        return jsonify({"error": "Email or login is required"}), 400
     email_or_login = request.args.get('email_or_login')
     success = UserManager.delete_user(email_or_login)
     if success:
@@ -59,8 +65,10 @@ def delete_user():
 @user_bp.route("/add_class", methods=["POST"])
 @auth_required
 def add_users():
+    if not request.json.get('users'):
+        return jsonify({"error": "Users data is required"}), 400
     users_data = request.json.get('users')
-    if not users_data or not isinstance(users_data, list):
+    if not isinstance(users_data, list):
         return jsonify({"error": "Invalid users data. Expected a list of user information."}), 400
     
     added_users = []
