@@ -1,6 +1,7 @@
 
 services:
   web:
+    restart: always
     image: python:3
     build:
       context: .
