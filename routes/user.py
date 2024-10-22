@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from database.user import UserManager
+from routes.auth import auth_required
 
 user_bp = Blueprint("user", __name__)
 
@@ -8,6 +9,7 @@ def index():
     return "User"
 
 @user_bp.route("/add_user", methods=["POST"])
+@auth_required
 def add_user():
     real_name = request.json.get('real_name')
     if not real_name:
@@ -16,6 +18,7 @@ def add_user():
     return jsonify({"success": True, "username": str(user.login), "password": password}), 201
 
 @user_bp.route("/get_user", methods=["GET"])
+@auth_required
 def get_user():
     email_or_login = request.args.get('email_or_login')
     user = UserManager.get_user_by_email(email_or_login)
@@ -31,6 +34,7 @@ def get_user():
         return jsonify({"error": "User not found"}), 404
 
 @user_bp.route("/update_user", methods=["POST"])
+@auth_required
 def update_user():
     email_or_login = request.json.get('email_or_login')
     updates = request.json.get('updates', {})
@@ -41,6 +45,7 @@ def update_user():
         return jsonify({"error": "User not found or update failed"}), 404
 
 @user_bp.route("/delete_user", methods=["DELETE"])
+@auth_required
 def delete_user():
     email_or_login = request.args.get('email_or_login')
     success = UserManager.delete_user(email_or_login)
@@ -51,6 +56,7 @@ def delete_user():
 
 
 @user_bp.route("/add_class", methods=["POST"])
+@auth_required
 def add_users():
     users_data = request.json.get('users')
     if not users_data or not isinstance(users_data, list):
