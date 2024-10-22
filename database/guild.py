@@ -11,6 +11,14 @@ class Guild(db.Model):
     def __repr__(self):
         return f"<Guild {self.title}>"
 
+class GuildUser(db.Model):
+    __tablename__ = 'guild_users'
+    guild_id = db.Column(db.Integer, db.ForeignKey('guilds.guild_id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+
+    def __repr__(self):
+        return f"<GuildUser {self.guild_id} {self.user_id}>"
+
 class GuildManager:
     @staticmethod
     def add_guild(title, guild_team):
@@ -18,3 +26,4 @@ class GuildManager:
         db.session.add(new_guild)
         db.session.commit()
         return new_guild
+    

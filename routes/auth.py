@@ -37,8 +37,11 @@ def is_admin(f):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-
+            user = User.get_user_by_login(data["login"])
+            if not user.is_admin:
+                return jsonify({'message': 'User is not admin!'}), 401
+            else:
+                return f(*args, **kwargs)
         except:
             return jsonify({'message': 'Token is invalid!'}), 401
-        return f(*args, **kwargs)
     return decorated
