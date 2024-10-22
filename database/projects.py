@@ -14,4 +14,4 @@ class Project(db.Model):
     status = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return {"project_id": self.project_id, "title": self.title}
+        return f"<Project {self.title}>"

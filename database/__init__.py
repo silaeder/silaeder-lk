@@ -9,3 +9,5 @@ def init_db(app):
     db.init_app(app)
 
 from .user import User
+from .guild import Guild
+from .projects import Project

@@ -5,6 +5,7 @@ from transliterate import translit
 import random
 import string
 from . import db
+import hashlib
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -17,6 +18,7 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     contacts = db.Column(db.String(100))
     interests = db.Column(db.String(100))
+    projects = db.relationship('Project', backref='user', lazy=True)
 
     def __repr__(self):
         return f"<User {self.login}>"
@@ -36,11 +38,12 @@ class UserManager:
         
         characters = string.ascii_letters + string.digits
         password = ''.join(random.choice(characters) for i in range(8))
+        password_hash = hashlib.md5(password.encode()).hexdigest()
 
-        new_user = User(login=username, full_name=real_name, password=password)
+        new_user = User(login=username, full_name=real_name, password=password_hash)
         db.session.add(new_user)
         db.session.commit()
-        return new_user
+        return new_user, password
         
     @staticmethod
     def get_user_by_email(email_or_login):
@@ -65,5 +68,13 @@ class UserManager:
         if user:
             db.session.delete(user)
             db.session.commit()
+            return True
+        return False
+    
+    @staticmethod
+    def check_credentials(email_or_login, password_hash):
+        """Проверяет учетные данные пользователя."""
+        user = UserManager.get_user_by_email(email_or_login)
+        if user and user.password == password_hash:
             return True
         return False
