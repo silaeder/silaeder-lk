@@ -9,3 +9,6 @@ transliterate==1.10.2
 
 #JWT
 PyJWT
+
+#Загрузка переменных окружения
+python-dotenv

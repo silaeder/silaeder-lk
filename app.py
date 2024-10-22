@@ -6,6 +6,9 @@ from routes.guild import guild_bp
 from routes.auth import auth_bp
 from database.user import UserManager
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
