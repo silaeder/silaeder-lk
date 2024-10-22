@@ -15,3 +15,9 @@ class Project(db.Model):
 
     def __repr__(self):
         return f"<Project {self.title}>"
+    
+    def get_project_by_id(project_id):
+        return Project.query.filter_by(project_id=project_id).first()
+    
+    def get_projects_by_user_id(user_id):
+        return Project.query.filter_by(user_id=user_id).all()
