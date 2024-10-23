@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 
 test.py
+restart.sh
+restart_all.sh
