@@ -110,11 +110,10 @@ def remove_user_from_guild(guild_id):
 
 
 
-#это пока не работает(
-@guild_bp.route("/delete/<int:guild_id>", methods=["POST"])
+@guild_bp.route("/delete/<int:guild_id>", methods=["DELETE"])
 @auth_required
 def delete_guild(guild_id):
-    result, error = GuildManager.delete_guild(guild_id)
-    if error:
-        return jsonify({"message": error}), 404
-    return jsonify({"message": "Guild deleted"}), 200
+    success, error = GuildManager.delete_guild(guild_id)
+    if not success:
+        return jsonify({"message": error}), 404 if error == "Guild not found" else 500
+    return jsonify({"message": "Guild deleted successfully"}), 200

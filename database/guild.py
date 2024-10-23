@@ -138,13 +138,13 @@ class GuildManager:
             return None, f"Error updating guild: {str(e)}"
 
 
- #это пока не работает(
     @staticmethod
     def delete_guild(guild_id):
         guild = Guild.query.get(guild_id)
         if not guild:
             return False, "Guild not found"
         try:
+            GuildUser.query.filter_by(guild_id=guild_id).delete()
             db.session.delete(guild)
             db.session.commit()
             return True, None
