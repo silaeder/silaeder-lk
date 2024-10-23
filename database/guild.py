@@ -13,11 +13,12 @@ class Guild(db.Model):
 
 class GuildUser(db.Model):
     __tablename__ = 'guild_users'
-    guild_id = db.Column(db.Integer, db.ForeignKey('guilds.guild_id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    guild_id = db.Column(db.Integer, db.ForeignKey('guilds.guild_id'), nullable=False)
+    login = db.Column(db.String(100), db.ForeignKey('users.login'), nullable=False)
 
     def __repr__(self):
-        return f"<GuildUser {self.guild_id} {self.user_id}>"
+        return f"<GuildUser {self.guild_id+" "+self.login}>"
 
 class GuildManager:
     @staticmethod
