@@ -30,9 +30,15 @@ def get_user():
     if user:
         return jsonify({
             "user": {
+                "user_id": user.user_id,
                 "login": user.login,
                 "email": user.email,
-                "full_name": user.full_name
+                "full_name": user.full_name,
+                "birth_date": user.birth_date,
+                "photo_path": user.photo_path,
+                "contacts": user.contacts,
+                "interests": user.interests,
+                "is_admin": user.is_admin
             }
         }), 200
     else:
