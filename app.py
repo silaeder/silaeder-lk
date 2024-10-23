@@ -17,12 +17,7 @@ load_dotenv()
 app = Flask(__name__)
 
 CORS(app, resources={r"/*": {
-    "origins": [
-        "http://server.mrvasil.ru:*",
-        "https://server.mrvasil.ru:*",
-        "http://server.mrvasil.ru",
-        "https://server.mrvasil.ru"
-    ],
+    "origins": "*",
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],
     "expose_headers": ["Content-Type", "X-Total-Count"],
