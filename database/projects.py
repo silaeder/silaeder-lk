@@ -22,7 +22,7 @@ class ProjectUser(db.Model):
     login = db.Column(db.String(100), db.ForeignKey('users.login'), nullable=False)
 
     def __repr__(self):
-        return f"<ProjectUser {self.project_id} {self.login}>"
+        return f"<ProjectUser {self.project_id+" "+self.login}>"
 
 class ProjectManager:
     @staticmethod
