@@ -18,6 +18,7 @@ class Project(db.Model):
     
 class ProjectUser(db.Model):
     __tablename__ = 'project_users'
+    id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.project_id'), nullable=False)
     login = db.Column(db.String(100), db.ForeignKey('users.login'), nullable=False)
 
