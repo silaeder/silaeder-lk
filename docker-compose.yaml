@@ -1,6 +1,7 @@
 
 services:
   web:
+    restart: always
     image: python:3
     build:
       context: .
@@ -27,7 +28,7 @@ services:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "silaeder@admin.org"
-      PGADMIN_DEFAULT_PASSWORD: "${POSTGRES_PASSWORD}"
+      PGADMIN_DEFAULT_PASSWORD: "${DB_PASSWORD}"
     ports:
       - 3751:80
     depends_on:
