@@ -6,6 +6,7 @@ from database.user import UserManager
 from functools import wraps
 from dotenv import load_dotenv
 import datetime
+from datetime import timezone
 load_dotenv()
 
 auth_bp = Blueprint("auth", __name__)
@@ -29,10 +30,11 @@ def auth_required(f):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-            if data["exp"] < datetime.datetime.now(datetime.timezone.utc):
+            exp_datetime = datetime.fromtimestamp(data["exp"], timezone.utc)
+            if exp_datetime < datetime.now(timezone.utc):
                 return jsonify({'message': 'Token is expired!'}), 401
-        except:
-            return jsonify({'message': 'Token is invalid!'}), 401
+        except Exception as e:
+            return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
         return f(*args, **kwargs)
     return decorated
 
@@ -44,13 +46,14 @@ def is_admin(f):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
-            if data["exp"] < datetime.datetime.now(datetime.timezone.utc):
+            exp_datetime = datetime.fromtimestamp(data["exp"], timezone.utc)
+            if exp_datetime < datetime.now(timezone.utc):
                 return jsonify({'message': 'Token is expired!'}), 401
             user = UserManager.get_user_by_email(data["login"])
             if not user.is_admin:
                 return jsonify({'message': 'User is not admin!'}), 403
             else:
                 return f(*args, **kwargs)
-        except:
-            return jsonify({'message': 'Token is invalid!'}), 401
+        except Exception as e:
+            return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
     return decorated
