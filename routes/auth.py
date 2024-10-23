@@ -27,10 +27,10 @@ def auth_required(f):
         token = request.headers.get('Authorization')
         if not token:
             return jsonify({'message': 'Token is missing!'}), 401
-        if data["exp"] < datetime.datetime.now(datetime.timezone.utc):
-            return jsonify({'message': 'Token is expired!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+            if data["exp"] < datetime.datetime.now(datetime.timezone.utc):
+                return jsonify({'message': 'Token is expired!'}), 401
         except:
             return jsonify({'message': 'Token is invalid!'}), 401
         return f(*args, **kwargs)
@@ -44,6 +44,8 @@ def is_admin(f):
             return jsonify({'message': 'Token is missing!'}), 401
         try:
             data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+            if data["exp"] < datetime.datetime.now(datetime.timezone.utc):
+                return jsonify({'message': 'Token is expired!'}), 401
             user = UserManager.get_user_by_email(data["login"])
             if not user.is_admin:
                 return jsonify({'message': 'User is not admin!'}), 403
