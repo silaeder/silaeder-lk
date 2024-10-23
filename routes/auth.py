@@ -5,8 +5,7 @@ import hashlib
 from database.user import UserManager
 from functools import wraps
 from dotenv import load_dotenv
-import datetime
-from datetime import timezone
+from datetime import datetime, timezone, timedelta
 load_dotenv()
 
 auth_bp = Blueprint("auth", __name__)
@@ -18,7 +17,7 @@ def login():
     login = request.args.get("login")
     password = hashlib.md5(request.args.get("password").encode()).hexdigest()
     if UserManager.check_credentials(login, password):
-        token = jwt.encode({"login": login, "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7)}, os.getenv("JWT_SECRET"), algorithm="HS256")
+        token = jwt.encode({"login": login, "exp": datetime.now(timezone.utc) + timedelta(days=7)}, os.getenv("JWT_SECRET"), algorithm="HS256")
         return jsonify({"success": True, "token": token})
     return jsonify({"success": False})
 
