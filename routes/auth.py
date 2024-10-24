@@ -101,3 +101,18 @@ def is_user_in_project(project_id):
             return f(*args, **kwargs)
         return decorated_function
     return decorated
+
+@auth_bp.route("/get_username", methods=["GET"])
+@auth_required
+def get_username():
+    token = request.headers.get('Authorization')
+    try:
+        data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+        user_email = data["login"]
+        user = UserManager.get_user_by_email(user_email)
+        if user:
+            return jsonify({"username": user.full_name})
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        return jsonify({'error': 'Invalid token', 'message': str(e)}), 401

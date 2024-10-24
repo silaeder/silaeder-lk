@@ -85,6 +85,59 @@ Note: All routes marked with "Auth Required: Yes" need to include the JWT token 
 Authorization: <JWT_TOKEN>
 ```
 
+### Get Username
+
+Retrieves the username associated with the provided JWT token.
+
+- **URL:** `/auth/get_username`
+- **Method:** GET
+- **Auth Required:** Yes
+- **Headers:**
+  - `Authorization: <JWT_TOKEN>`
+- **Success Response:**
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "username": "John Doe"
+    }
+    ```
+- **Error Response:**
+  - **Code:** 401
+  - **Content:**
+    ```json
+    {
+      "message": "Token is missing!"
+    }
+    ```
+  OR
+  - **Code:** 401
+  - **Content:**
+    ```json
+    {
+      "message": "Token is invalid!",
+      "error": "<error_details>"
+    }
+    ```
+  OR
+  - **Code:** 401
+  - **Content:**
+    ```json
+    {
+      "message": "Token is expired!"
+    }
+    ```
+  OR
+  - **Code:** 404
+  - **Content:**
+    ```json
+    {
+      "error": "User not found"
+    }
+    ```
+
+This endpoint allows clients to retrieve the username associated with a valid JWT token. It's useful for displaying the current user's name in the application interface.
+
 ## User Routes
 
 ### Add User
