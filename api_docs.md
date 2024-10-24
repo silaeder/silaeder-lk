@@ -341,6 +341,43 @@ Adds multiple users to the database at once.
     }
     ```
 
+### Get Guilds Names by User
+
+Retrieves the names of all guilds a user is a member of.
+
+- **URL:** `/guild/get_guilds_names_by_user`
+- **Method:** GET
+- **Auth Required:** Yes
+- **URL Params:** 
+  - `login=[string]`
+- **Success Response:**
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "guilds": ["Guild Name 1", "Guild Name 2", "Guild Name 3"]
+    }
+    ```
+- **Error Response:**
+  - **Code:** 401
+  - **Content:**
+    ```json
+    {
+      "message": "Token is missing!"
+    }
+    ```
+  OR
+  - **Code:** 401
+  - **Content:**
+    ```json
+    {
+      "message": "Token is invalid!",
+      "error": "<error_details>"
+    }
+    ```
+
+This endpoint allows clients to retrieve the names of all guilds that a specific user is a member of. It's useful for displaying a user's guild memberships in the application interface.
+
 ## Project Routes
 
 ### Get All Projects
@@ -809,3 +846,4 @@ Deletes an existing guild.
 
 
 This documentation covers the main routes and their functionalities. Make sure to handle errors appropriately and validate input data on the server-side for security purposes.
+
