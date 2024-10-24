@@ -37,7 +37,7 @@ class ProjectManager:
         return Project.query.filter_by(project_id=project_id).first()
     
     @staticmethod
-    def get_projects_by_user_id(login):
+    def get_projects_by_login(login):
         projects = ProjectUser.query.filter_by(login=login).all()
         return [ProjectManager.get_project_by_id(project.project_id) for project in projects] if projects else []
     

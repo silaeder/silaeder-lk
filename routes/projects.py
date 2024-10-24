@@ -37,7 +37,7 @@ def get_projects_by_user():
     if not request.args.get("login"):
         return jsonify({"message": "Login is required"}), 400
     login = request.args.get("login")
-    projects = ProjectManager.get_projects_by_user_login(login)
+    projects = ProjectManager.get_projects_by_login(login)
     return jsonify([project.to_dict() for project in projects])
 
 @projects_bp.route("/create", methods=["POST"])
