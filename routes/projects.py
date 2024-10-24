@@ -83,7 +83,6 @@ def remove_user_from_project(project_id):
     return remove_user_from_project_decorated()
 
 @projects_bp.route("/get_all_projects", methods=["GET"])
-@auth_required
 def get_all_projects():
     projects = ProjectManager.get_all_projects()
     return jsonify([project.to_dict() for project in projects])
