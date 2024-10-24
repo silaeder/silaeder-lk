@@ -81,3 +81,7 @@ class UserManager:
         if user and user.password == password_hash:
             return True
         return False
+    
+    @staticmethod
+    def get_all_users():
+        return User.query.all()

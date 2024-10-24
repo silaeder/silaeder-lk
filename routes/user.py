@@ -94,3 +94,10 @@ def add_users():
         })
         
     return jsonify({"success": True, "added_users": added_users}), 201
+
+@user_bp.route("/get_all_users", methods=["GET"])
+@auth_required
+@is_admin
+def get_all_users():
+    users = UserManager.get_all_users()
+    return jsonify({"users": [user.to_dict() for user in users]}), 200

@@ -75,7 +75,7 @@ def is_user_in_guild(guild_id):
             except Exception as e:
                 return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
             guild_users = GuildManager.get_guild(guild_id)[0].guild_team.split(',')
-            if data["login"] not in guild_users:
+            if data["login"] not in guild_users and not UserManager.get_user_by_email(data["login"]).is_admin:
                 return jsonify({'message': 'User is not in guild!'}), 403
             return f(*args, **kwargs)
         return decorated_function
@@ -116,7 +116,7 @@ def is_user_in_project(project_id):
             except Exception as e:
                 return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
             project_users = ProjectManager.get_users_by_project_id(project_id)
-            if data["login"] not in project_users:
+            if data["login"] not in project_users and not UserManager.get_user_by_email(data["login"]).is_admin:
                 return jsonify({'message': 'User is not in project!'}), 403
             return f(*args, **kwargs)
         return decorated_function
