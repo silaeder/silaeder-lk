@@ -95,6 +95,28 @@ def remove_user_from_project(project_id):
         return jsonify({"message": f"User {login} not found"}), 404
     return jsonify({"message": "User removed from project"}), 200
 
+@projects_bp.route("/get_all_projects", methods=["GET"])
+@auth_required
+def get_all_projects():
+    projects = ProjectManager.get_all_projects()
+    return jsonify([project.to_dict() for project in projects])
+
+@projects_bp.route("/update_project/<int:project_id>", methods=["POST"])
+@auth_required
+def update_project_by_id(project_id):
+    args = {}
+    for i in PROJECT_FIELDS:
+        if i in request.json:
+            if i == "team":
+                for login in request.json[i]:
+                    st = ProjectManager.add_user_to_project(project_id, login)
+                    if st == -2:
+                        return jsonify({"message": f"User {login} not found"}), 404
+            else:
+                args[i] = request.json[i]
+    ProjectManager.update_project(project_id, **args)
+    return jsonify({"message": "Project updated"}), 200
+
 @projects_bp.route("/delete/<int:project_id>", methods=["POST"])
 @auth_required
 def delete_project(project_id):

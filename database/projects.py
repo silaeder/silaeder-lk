@@ -66,6 +66,20 @@ class ProjectManager:
         return False
     
     @staticmethod
+    def update_project(project_id, **kwargs):
+        project = Project.query.filter_by(project_id=project_id).first()
+        if project:
+            for key, value in kwargs.items():
+                setattr(project, key, value)
+            db.session.commit()
+            return True
+        return False
+    
+    @staticmethod
+    def get_all_projects():
+        return Project.query.all()
+    
+    @staticmethod
     def get_users_by_project_id(project_id):
         if not ProjectManager.get_project_by_id(project_id):
             return -1
