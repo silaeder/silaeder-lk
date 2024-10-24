@@ -434,6 +434,7 @@ Creates a new project.
   {
     "title": "New Project",
     "description": "Project Description",
+    "short_description": "Short Description",
     "teacher": "teacher.login",
     "team": ["john.dd", "jane.ss"],
     "status": "New"
