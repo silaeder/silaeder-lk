@@ -111,8 +111,8 @@ def get_username():
         user_email = data["login"]
         user = UserManager.get_user_by_email(user_email)
         if user:
-            return jsonify({"username": user.full_name})
+            return jsonify({"username": user.login})
         else:
             return jsonify({"error": "User not found"}), 404
-    except Exception as e:
+    except Exception as e: 
         return jsonify({'error': 'Invalid token', 'message': str(e)}), 401
