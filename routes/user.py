@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from database.user import UserManager
-from routes.auth import auth_required
+from routes.auth import auth_required, is_admin
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,6 +13,7 @@ def index():
 
 @user_bp.route("/add_user", methods=["POST"])
 @auth_required
+@is_admin
 def add_user():
     real_name = request.json.get('real_name')
     if not real_name:
@@ -59,6 +60,7 @@ def update_user():
 
 @user_bp.route("/delete_user", methods=["DELETE"])
 @auth_required
+@is_admin
 def delete_user():
     if not request.args.get('email_or_login'):
         return jsonify({"error": "Email or login is required"}), 400
@@ -72,6 +74,7 @@ def delete_user():
 
 @user_bp.route("/add_class", methods=["POST"])
 @auth_required
+@is_admin
 def add_users():
     if not request.json.get('users'):
         return jsonify({"error": "Users data is required"}), 400

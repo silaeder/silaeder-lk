@@ -121,6 +121,11 @@ def remove_user_from_guild(guild_id):
         return jsonify({"message": "User removed from guild"}), 200
     return remove_user_from_guild_decorated()
 
+@guild_bp.route("/get_guilds_names_by_user", methods=["GET"])
+@auth_required
+def get_guilds_by_user():
+    guilds = GuildManager.get_guilds_by_user(request.args.get("login"))
+    return jsonify({"guilds": [guild.title for guild in guilds]}), 200
 
 @guild_bp.route("/delete/<int:guild_id>", methods=["DELETE"])
 @auth_required

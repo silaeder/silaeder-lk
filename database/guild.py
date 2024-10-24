@@ -137,6 +137,10 @@ class GuildManager:
             db.session.rollback()
             return None, f"Error updating guild: {str(e)}"
 
+    @staticmethod
+    def get_guilds_by_user(login):
+        guilds = GuildUser.query.filter_by(login=login).all()
+        return [Guild.query.get(guild.guild_id) for guild in guilds]
 
     @staticmethod
     def delete_guild(guild_id):
