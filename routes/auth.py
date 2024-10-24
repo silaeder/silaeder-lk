@@ -6,6 +6,9 @@ from database.user import UserManager
 from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timezone, timedelta
+from database.guild import GuildManager
+from database.projects import ProjectManager
+
 load_dotenv()
 
 auth_bp = Blueprint("auth", __name__)
@@ -55,4 +58,46 @@ def is_admin(f):
                 return f(*args, **kwargs)
         except Exception as e:
             return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+    return decorated
+
+def is_user_in_guild(guild_id):
+    def decorated(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            token = request.headers.get('Authorization')
+            if not token:
+                return jsonify({'message': 'Token is missing!'}), 401
+            try:
+                data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+                exp_datetime = datetime.fromtimestamp(data["exp"], timezone.utc)
+                if exp_datetime < datetime.now(timezone.utc):
+                    return jsonify({'message': 'Token is expired!'}), 401
+            except Exception as e:
+                return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+            guild_users = GuildManager.get_guild(guild_id)[0].guild_team.split(',')
+            if data["login"] not in guild_users:
+                return jsonify({'message': 'User is not in guild!'}), 403
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorated
+
+def is_user_in_project(project_id):
+    def decorated(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            token = request.headers.get('Authorization')
+            if not token:
+                return jsonify({'message': 'Token is missing!'}), 401
+            try:
+                data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+                exp_datetime = datetime.fromtimestamp(data["exp"], timezone.utc)
+                if exp_datetime < datetime.now(timezone.utc):
+                    return jsonify({'message': 'Token is expired!'}), 401
+            except Exception as e:
+                return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+            project_users = ProjectManager.get_users_by_project_id(project_id)
+            if data["login"] not in project_users:
+                return jsonify({'message': 'User is not in project!'}), 403
+            return f(*args, **kwargs)
+        return decorated_function
     return decorated
