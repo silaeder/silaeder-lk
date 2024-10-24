@@ -4,8 +4,8 @@ from routes.auth import auth_required, is_user_in_project, is_user_in_guild, is_
 from database import db
 from database.projects import ProjectManager
 
-PROJECT_FIELDS = ["title", "description", "teacher", "team", "status", "video_link", "presentation_path"]
-PROJECT_REQUIRED_FIELDS = ["title", "description", "teacher", "team", "status"]
+PROJECT_FIELDS = ["title", "description", "teacher", "team", "status", "video_link", "presentation_path", "short_description"]
+PROJECT_REQUIRED_FIELDS = ["title", "description", "teacher", "team", "status", "short_description"]
 
 projects_bp = Blueprint("projects", __name__)
 
