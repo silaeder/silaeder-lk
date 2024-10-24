@@ -20,8 +20,8 @@ CORS(app, resources={r"/*": {
     "origins": [
         "http://server.mrvasil.ru:*",
         "https://server.mrvasil.ru:*",
-        "http://server.mrvasil.ru",
-        "https://server.mrvasil.ru"
+        "http://silaeder.mrvasil.ru",
+        "https://silaeder.mrvasil.ru"
     ],
     "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],

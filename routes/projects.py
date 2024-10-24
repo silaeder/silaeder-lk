@@ -96,7 +96,6 @@ def remove_user_from_project(project_id):
     return jsonify({"message": "User removed from project"}), 200
 
 @projects_bp.route("/get_all_projects", methods=["GET"])
-@auth_required
 def get_all_projects():
     projects = ProjectManager.get_all_projects()
     return jsonify([project.to_dict() for project in projects])
