@@ -81,6 +81,26 @@ def is_user_in_guild(guild_id):
         return decorated_function
     return decorated
 
+def is_user_editable(login):
+    def decorated(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            token = request.headers.get('Authorization')
+            if not token:
+                return jsonify({'message': 'Token is missing!'}), 401
+            try:
+                data = jwt.decode(token, os.getenv("JWT_SECRET"), algorithms=["HS256"])
+                exp_datetime = datetime.fromtimestamp(data["exp"], timezone.utc)
+                if exp_datetime < datetime.now(timezone.utc):
+                    return jsonify({'message': 'Token is expired!'}), 401
+            except Exception as e:
+                return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+            if data["login"] != login and not UserManager.get_user_by_email(data["login"]).is_admin:
+                return jsonify({'message': 'User is not editable!'}), 403
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorated
+
 def is_user_in_project(project_id):
     def decorated(f):
         @wraps(f)
@@ -116,3 +136,4 @@ def get_username():
             return jsonify({"error": "User not found"}), 404
     except Exception as e: 
         return jsonify({'error': 'Invalid token', 'message': str(e)}), 401
+
