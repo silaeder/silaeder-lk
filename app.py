@@ -46,7 +46,7 @@ def index():
 @app.route("/api/docs")
 def api_docs():
     with open("api_docs.md", "r") as file:
-        return markdown(file.read(), extensions=["fenced_code"])
+        return markdown.markdown(file.read(), extensions=["fenced_code"])
 
 with app.app_context():
     db.create_all()
