@@ -36,6 +36,10 @@ app.register_blueprint(user_bp, url_prefix="/user")
 app.register_blueprint(guild_bp, url_prefix="/guild")
 app.register_blueprint(auth_bp, url_prefix="/auth")
 
+@app.route("/")
+def index():
+    return """<html><head><style>body{font-family:Arial,sans-serif;line-height:1.6;margin:20px}h1{color:#333;border-bottom:2px solid #333;padding-bottom:10px}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}</style></head><body><h1>Hello! It's Silaeder API server!</h1><p>Silaeder frontend: <a href="https://silaeder.mrvasil.ru/">https://silaeder.mrvasil.ru/</a></p><p>Documentation: <a href="https://api.silaeder.mrvasil.ru/docs">https://api.silaeder.mrvasil.ru/docs</a></p></body></html>"""
+
 with app.app_context():
     db.create_all()
     user = UserManager.add_user("ADM I N", is_admin=True, password=os.getenv("ADMIN_PASSWORD"))
