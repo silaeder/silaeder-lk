@@ -23,15 +23,9 @@ class ProjectUser(db.Model):
     login = db.Column(db.String(100), db.ForeignKey('users.login'), nullable=False)
 
     def __repr__(self):
-        return f"<ProjectUser {self.project_id+" "+self.login}>"
+        return f"<ProjectUser {self.project_id} {self.login}>"
 
 class ProjectManager:
-    @staticmethod
-    def create_project(project):
-        db.session.add(project)
-        db.session.commit()
-        return project
-    
     @staticmethod
     def get_project_by_id(project_id):
         return Project.query.filter_by(project_id=project_id).first()
@@ -39,14 +33,14 @@ class ProjectManager:
     @staticmethod
     def get_projects_by_login(login):
         projects = ProjectUser.query.filter_by(login=login).all()
-        return [ProjectManager.get_project_by_id(project.project_id) for project in projects] if projects else []
+        with open("logss", "w") as f:
+            f.write(str(projects))
+        return [ProjectManager.get_project_by_id(project.project_id) for project in projects]
     
     @staticmethod
     def add_user_to_project(project_id, login):
-        if not ProjectManager.get_project_by_id(project_id):
+        if not UserManager.get_user_by_email(login):
             return -1
-        if not UserManager.get_user_by_login(login):
-            return -2
         project_user = ProjectUser(project_id=project_id, login=login)
         db.session.add(project_user)
         db.session.commit()

@@ -43,7 +43,7 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 def index():
     return """<html><head><style>body{font-family:Arial,sans-serif;line-height:1.6;margin:20px}h1{color:#333;border-bottom:2px solid #333;padding-bottom:10px}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}</style></head><body><h1>Hello! It's Silaeder API server!</h1><p>Silaeder frontend: <a href="https://silaeder.mrvasil.ru/">https://silaeder.mrvasil.ru/</a></p><p>Documentation: <a href="https://api.silaeder.mrvasil.ru/docs">https://api.silaeder.mrvasil.ru/docs</a></p></body></html>"""
 
-@app.route("/api/docs")
+@app.route("/docs")
 def api_docs():
     with open("api_docs.md", "r") as file:
         return markdown.markdown(file.read(), extensions=["fenced_code"])

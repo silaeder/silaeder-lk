@@ -38,7 +38,19 @@ def get_projects_by_user():
         return jsonify({"message": "Login is required"}), 400
     login = request.args.get("login")
     projects = ProjectManager.get_projects_by_login(login)
-    return jsonify([project.to_dict() for project in projects])
+    d = {}
+    for i in projects:
+        d[i.project_id] = {
+            "title": i.title,
+            "description": i.description,
+            "teacher": i.teacher,
+            "team": [users.login for users in ProjectManager.get_users_by_project_id(i.project_id)],
+            "status": i.status,
+            "short_description": i.short_description,
+            "video_link": i.video_link,
+            "presentation_path": i.presentation_path
+        }
+    return d
 
 @projects_bp.route("/create", methods=["POST"])
 @auth_required
@@ -47,11 +59,19 @@ def create_project():
         if i not in request.json:
             return jsonify({"message": f"Field {i} is required"}), 400
     project = Project()
+    team = []
     for i in PROJECT_FIELDS:
         if i in request.json:
-            setattr(project, i, request.json[i])
+            if i == "team":
+                team = request.json[i]
+            else:
+                setattr(project, i, request.json[i])
     db.session.add(project)
     db.session.commit()
+    for login in team:
+        st = ProjectManager.add_user_to_project(project.project_id, login)
+        if st == -1:
+            return jsonify({"message": f"User {login} not found"}), 404
     return jsonify({"message": "Project created"}), 201
 
 @projects_bp.route("/add_user/<int:project_id>", methods=["POST"])
