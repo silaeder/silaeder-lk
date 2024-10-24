@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify, render_template
 from database.projects import Project
 from routes.auth import auth_required, is_user_in_project, is_user_in_guild, is_admin
-from database import db
 from database.projects import ProjectManager
+from database import db
 
 PROJECT_FIELDS = ["title", "description", "teacher", "team", "status", "video_link", "presentation_path", "short_description"]
 PROJECT_REQUIRED_FIELDS = ["title", "description", "teacher", "team", "status", "short_description"]
@@ -85,7 +85,19 @@ def remove_user_from_project(project_id):
 @projects_bp.route("/get_all_projects", methods=["GET"])
 def get_all_projects():
     projects = ProjectManager.get_all_projects()
-    return jsonify([project.to_dict() for project in projects])
+    d = {}
+    for i in projects:
+        d[i.project_id] = {
+            "title": i.title,
+            "description": i.description,
+            "teacher": i.teacher,
+            "team": ProjectManager.get_users_by_project_id(i.project_id),
+            "status": i.status,
+            "short_description": i.short_description,
+            "video_link": i.video_link,
+            "presentation_path": i.presentation_path
+        }
+    return d
 
 @projects_bp.route("/update/<int:project_id>", methods=["POST"])
 @auth_required

@@ -140,6 +140,32 @@ This endpoint allows clients to retrieve the username associated with a valid JW
 
 ## User Routes
 
+
+### Get All Users
+
+Retrieves all users.
+
+- **URL:** `/user/get_all_users`
+- **Method:** GET
+- **Auth Required:** Yes
+- **Success Response:**
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "user_id": {
+        "login": "john.dd",
+        "email": "john@example.com",
+        "full_name": "John Doe",
+        "birth_date": "1990-01-01",
+        "photo_path": "/path/to/photo.jpg",
+        "contacts": "Contact info",
+        "interests": "Interests",
+        "is_admin": false
+      }
+    }
+    ```
+
 ### Add User
 
 Adds a new user to the database.
@@ -317,6 +343,30 @@ Adds multiple users to the database at once.
 
 ## Project Routes
 
+### Get All Projects
+
+Retrieves all projects.
+
+- **URL:** `/projects/get_all_projects`
+- **Method:** GET
+- **Auth Required:** Yes
+- **Success Response:**
+  - **Code:** 200
+  - **Content:**
+    ```json
+    {
+      "project_id": {
+        "title": "Project Title",
+        "description": "Project Description",
+        "teacher": "teacher.login",
+        "team": ["john.dd", "jane.ss"],
+        "status": "In Progress",
+        "short_description": "Short Description",
+        "video_link": "https://example.com/video",
+        "presentation_path": "/path/to/presentation.pdf"
+      }
+    }
+    ```
 ### Get Project Members
 
 Retrieves the members of a specific project.

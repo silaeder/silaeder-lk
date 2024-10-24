@@ -100,4 +100,17 @@ def add_users():
 @is_admin
 def get_all_users():
     users = UserManager.get_all_users()
-    return jsonify({"users": [user.to_dict() for user in users]}), 200
+    d = {}
+    for i in users:
+        d[i.user_id] = {
+            "user_id": i.user_id,
+            "login": i.login,
+            "email": i.email,
+            "full_name": i.full_name,
+            "birth_date": i.birth_date,
+            "photo_path": i.photo_path,
+            "contacts": i.contacts,
+            "interests": i.interests,
+            "is_admin": i.is_admin
+        }
+    return jsonify(d), 200
