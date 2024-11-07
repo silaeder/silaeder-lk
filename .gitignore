@@ -165,3 +165,5 @@ test.py
 restart.sh
 restart_all.sh
 venv
+.DS_Store
+.env
